@@ -8,7 +8,7 @@ on:
         required: true
         type: string
       commit_message:
-        default: 'feat: bump version to'
+        default: 'feat: bump VERSION to'
         required: false
         type: string
     outputs:
