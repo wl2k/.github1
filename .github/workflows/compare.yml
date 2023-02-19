@@ -41,6 +41,7 @@ jobs:
             echo "The new text is: $(cat VERSION)"
             echo "changed=true" >> $GITHUB_OUTPUT
             echo "text=$(cat VERSION)" >> $GITHUB_OUTPUT
+          fi
             
       - name: Git
         if: steps.cmp.outputs.changed == 'true'
