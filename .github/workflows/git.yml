@@ -13,6 +13,9 @@ on:
         default: 'github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>'
         required: false
         type: string
+      tagging_message:
+        required: false
+        type: string
     
 jobs:
   git:
@@ -29,3 +32,4 @@ jobs:
         with:
           commit_message: ${{ inputs.commit_message }}
           commit_author: ${{ inputs.commit_author }}
+          tagging_message: ${{ inputs.tagging_message }}
