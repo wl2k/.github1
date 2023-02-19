@@ -1,0 +1,51 @@
+# Compare the two files to see if they are the same
+name: Compare
+
+on:
+  workflow_call:
+    inputs:
+      new:
+        required: true
+        type: string
+      commit_message:
+        required: false
+        type: string
+    outputs:
+      changed:
+        value: ${{ jobs.cmp.outputs.changed }}
+      text:
+        value: ${{ jobs.cmp.outputs.text }}
+
+jobs:
+  cmp:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.cmp.outputs.changed }}
+      text: ${{ steps.cmp.outputs.text }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Compare
+        id: cmp
+        run: |
+          echo "${{ inputs.new }}" > NEWVERSION
+          
+          if cmp -s VERSION NEWVERSION; then
+            echo "No change!"
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "text=" >> $GITHUB_OUTPUT
+          else
+            mv NEWVERSION VERSION
+            echo "Changed!"
+            echo "The new text is: $(cat VERSION)"
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "text=$(cat VERSION)" >> $GITHUB_OUTPUT
+            
+      - name: Git
+        if: steps.cmp.outputs.changed == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: ${{ inputs.commit_message }} ${{ steps.cmp.outputs.text }}
+          commit_author: 'github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>'
+          file_pattern: 'VERSION'
