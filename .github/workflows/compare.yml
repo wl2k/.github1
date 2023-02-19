@@ -8,20 +8,21 @@ on:
         required: true
         type: string
       commit_message:
+        default: 'feat: bump version to'
         required: false
         type: string
     outputs:
       changed:
         value: ${{ jobs.cmp.outputs.changed }}
-      text:
-        value: ${{ jobs.cmp.outputs.text }}
+      version:
+        value: ${{ jobs.cmp.outputs.version }}
 
 jobs:
   cmp:
     runs-on: ubuntu-latest
     outputs:
       changed: ${{ steps.cmp.outputs.changed }}
-      text: ${{ steps.cmp.outputs.text }}
+      version: ${{ steps.cmp.outputs.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -34,19 +35,19 @@ jobs:
           if cmp -s VERSION NEWVERSION; then
             echo "No change!"
             echo "changed=false" >> $GITHUB_OUTPUT
-            echo "text=" >> $GITHUB_OUTPUT
+            echo "version=" >> $GITHUB_OUTPUT
           else
             mv NEWVERSION VERSION
             echo "Changed!"
-            echo "The new text is: $(cat VERSION)"
+            echo "The new version is: $(cat VERSION)"
             echo "changed=true" >> $GITHUB_OUTPUT
-            echo "text=$(cat VERSION)" >> $GITHUB_OUTPUT
+            echo "version=$(cat VERSION)" >> $GITHUB_OUTPUT
           fi
             
       - name: Git
         if: steps.cmp.outputs.changed == 'true'
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: ${{ inputs.commit_message }} ${{ steps.cmp.outputs.text }}
+          commit_message: ${{ inputs.commit_message }} ${{ steps.cmp.outputs.version }}
           commit_author: 'github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>'
           file_pattern: 'VERSION'
