@@ -7,9 +7,6 @@ on:
       new:
         required: true
         type: string
-      run:
-        required: false
-        type: string
       commit_message:
         default: 'feat: bump VERSION to'
         required: false
