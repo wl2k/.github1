@@ -7,10 +7,6 @@ on:
       new:
         required: true
         type: string
-      commit_message:
-        default: 'feat: bump VERSION to'
-        required: false
-        type: string
     outputs:
       changed:
         value: ${{ jobs.cmp.outputs.changed }}
