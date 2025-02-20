@@ -7,7 +7,7 @@ on:
 
 jobs:
   cmp:
-    uses: WaterLemons2k/.github/.github/workflows/compare.yml@main
+    uses: ./.github/workflows/compare.yml
     with:
       pre: |
         echo 'deb [trusted=yes] http://deb.debian.org/debian/ testing main' >/etc/apt/sources.list
