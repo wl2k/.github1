@@ -12,8 +12,7 @@ jobs:
       pre: |
         echo 'deb [trusted=yes] http://deb.debian.org/debian/ testing main' | sudo tee /etc/apt/sources.list
         sudo apt-get update
-        sudo apt-get install ca-certificates
-      new: $(sudo apt-get install ca-certificates | grep ubuntu | awk -F '[(u]' '{print $2}')
+      new: $(sudo apt-get install ca-certificates | awk '/G/ {print $7}')
 
   git:
     needs: cmp
