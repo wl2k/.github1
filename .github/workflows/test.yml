@@ -17,5 +17,4 @@ jobs:
     with:
       run: |
         echo "${{ needs.cmp.outputs.version }}"
-      with:
-        commit_message: ''
+      commit_message: ''
