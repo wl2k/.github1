@@ -9,9 +9,6 @@ jobs:
   cmp:
     uses: ./.github/workflows/compare.yml
     with:
-      pre: |
-        echo 'deb [trusted=yes] http://deb.debian.org/debian/ testing main' | sudo tee /etc/apt/sources.list
-        sudo apt-get update
       new: $(sudo apt-get install ca-certificates | awk '/G/ {print $7}')
 
   git:
