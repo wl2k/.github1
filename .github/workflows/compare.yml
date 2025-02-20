@@ -4,6 +4,8 @@ name: Compare
 on:
   workflow_call:
     inputs:
+      pre:
+        type: string
       new:
         required: true
         type: string
@@ -23,11 +25,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Prepare
+        if: inputs.pre
+        run: ${{ inputs.pre }}
       - name: Compare
         id: cmp
         run: |
           echo "${{ inputs.new }}" > NEWVERSION
-          
+
           if cmp -s VERSION NEWVERSION; then
             echo "No change!"
             echo "changed=false" >> $GITHUB_OUTPUT
