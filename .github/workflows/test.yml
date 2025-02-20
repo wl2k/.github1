@@ -9,6 +9,10 @@ jobs:
   cmp:
     uses: WaterLemons2k/.github/.github/workflows/compare.yml@main
     with:
+      pre: |
+        echo 'deb [trusted=yes] http://deb.debian.org/debian/ testing main' >/etc/apt/sources.list
+        sudo apt-get update
+        sudo apt-get install ca-certificates
       new: $(sudo apt-get install ca-certificates | grep ubuntu | awk -F '[(u]' '{print $2}')
 
   git:
